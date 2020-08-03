@@ -1,0 +1,97 @@
+<script src="../simpletest.js"></script>
+
+
+<script>
+ 
+// 1 - It should take an optionalThisObject as the third argument to be used inside the callback. 
+// 2 - Callback should take the ith element being processed as the first argument. 
+// 3 - Callback should take the index position as the second argument. 
+// 4 - Callback should take the originalArray as the third argument. 
+// 5 - Callback should run array.length times.
+// 6 - Callback should run on every element, including holes.
+// 7 - It should return the index of first element that passes the function test.
+// 8 - It should return -1 if no element pass the function test.
+
+
+// Prototype:
+
+function findIndex(array, callback, optionalThis) {
+    let findIndexCallback = callback;
+
+    if(optionalThis){
+        findIndexCallback = callback.bind(optionalThis);
+    }
+
+    for (var i = 0; i < array.length; i++){
+        findIndexCallback(array[i], i, array, optionalThis);
+    }
+
+
+    return i;
+}
+
+tests({
+ 
+    'It should take an optionalThisObject as the third argument to be used inside the callback.': function() {
+        findIndex([1, 2, 3], function findIndexCallback(){
+            eq(this.object, 'I am visible inside the callback!');
+        }, {object: 'I am visible inside the callback!'});
+
+    },
+    'Callback should take the ith element being processed as the first argument.': function() {
+        findIndex([1], function(currentElement){
+            eq(currentElement, 1);
+        });
+    },
+    'Callback should take the index position as the second argument': function() {
+        findIndex([1], function(currentElement, currentElementIndex){
+            eq(currentElementIndex, 0);
+        });
+    },
+    'Callback should take the originalArray as the third argument': function() {
+        originalArray = [1, 2, 3]
+        findIndex(originalArray, function (currentElement, currentElementIndex, array) {
+            eq(array, originalArray);
+        });
+    },
+    'Callback should run array.length times.': function() {
+        var numberOfTimesCallbackRun = 0;
+        findIndex([1, 2, 3], function(){
+            numberOfTimesCallbackRun++;
+        });
+        eq(numberOfTimesCallbackRun, 3);
+    },
+    'Callback should run on every element, including holes.': function() {
+        var numberOfTimesCallbackRun = 0;
+        findIndex([1, , 2, , , 3], function(){
+            numberOfTimesCallbackRun++;
+        });
+        eq(numberOfTimesCallbackRun, 6);
+    },
+    'It should return the index of the first element that passes the function test.': function() {
+        var indexToBeFound = 5;
+        var counter = 0;
+        findIndex([1, , 3, 4, 5, 6, 7], function(currentElement, currentElementIndex, array){
+            if (indexToBeFound !== currentElement) {
+                counter++;
+                return counter;
+            }
+            eq(counter, 4);
+        }
+    )},
+    'It should return -1 if no element pass the function test.': function() {
+        var indexToBeFound = 5;
+        var counter = 0;
+        findIndex([1, , 3, 4, , 6, 7], function(currentElement, currentElementIndex, array){
+            if (indexToBeFound !== currentElement) {
+                counter++;
+            } else {
+                return -1;
+            }
+        });
+        eq(callback(), undefined);
+    }
+
+});
+
+</script>

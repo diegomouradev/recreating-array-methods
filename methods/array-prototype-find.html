@@ -1,0 +1,94 @@
+<script src="../simpletest.js"></script>
+
+
+<script>
+ 
+// It should take an optionalThis as the third argument. DONE
+// Callback should take the ith element being processed as the first argument. DONE
+// Callback should take the index position as the second argument. DONE
+// Callback should take the originalArray as the third argument. DONE
+// Callback should run array.length times.
+// Callback should run on every element, including holes.
+// It should return the first element that passes the function test.
+// It should return undefined if no element pass the function test.
+// It should not mutate the originalArray.
+
+// Prototype:
+
+function find(array, callback, optionalThis){
+    let findCallback = callback;
+    
+    if(optionalThis){
+        findCallback = callback.bind(optionalThis);
+    }
+
+    for (var i = 0; i < array.length; i++) {
+        if (findCallback(array[i], i, array) ) {
+            return array[i];
+        }
+    }
+}
+
+tests({
+ 
+    'It should take an optionalThis as the third argument to be used inside the callback.': function() {
+        find([1, 2, 3], function findCallback(){
+            eq(this.optionalThis, 'Is visible inside the callback');
+        }, {optionalThis: 'Is visible inside the callback'});
+    },
+    'Callback should take the ith element being processed as the first argument.': function() {
+        find([1], function(number){
+            eq(number, 1);
+        });
+    },
+    'Callback should take the index position as the second argument': function() {
+        find([1], function(number, index){
+            eq(index, 0);
+        });
+    },
+    'Callback should take the originalArray as the third argument': function() {
+        let originalArray = [1, 2, 3];
+        find([], function(number, index, originalArray){
+            eq(originalArray, [1, 2, 3]);
+        });
+    },
+    'Callback should run array.length times.': function() {
+        let numberOfTimesCallbackRan = 0;
+        find([1, 2, 3], function(){
+            numberOfTimesCallbackRan++;
+        });
+        eq(numberOfTimesCallbackRan, 3);
+    },
+    'Callback should run on every element, including holes.': function() {
+        let numberOfTimesCallbackRan = 0;
+        find([1, , 2, , 3], function(){
+            numberOfTimesCallbackRan++;
+        });
+        eq(numberOfTimesCallbackRan, 5);
+    },
+    'It should return the first element that passes the function test.': function() {
+        let elementToBeFound;
+        find([1, 2, 3], function(number) {
+            if(number === 2) {
+                elementToBeFound = number;
+            }
+            return elementToBeFound;
+        });
+        eq(elementToBeFound, 2);
+    },
+    'It should return undefined if no element pass the function test.': function() {
+        let elementToBeFound;
+        find([1, 2, 3], function(number) {
+            if(number === 4) {
+                elementToBeFound = number;
+            }
+            return elementToBeFound;
+        });
+        eq(elementToBeFound, undefined);
+    },
+    'It should not mutate the original array.': function() {
+        fail();     
+    }
+});
+
+</script>

@@ -1,0 +1,110 @@
+<script src="../simpletest.js"></script>
+
+<script>
+
+// Specifications:
+
+// Callback should run array.length.
+// Callback should skip empty indexes.
+// Callback should take the current element being processed from the array as the first argument.
+// Callback should take the index of the currentElement being processed from the array as the second argument.
+// Callback should take the originalArray as the third argument.
+// Function every can take an optionalThis object as the third argument, to be used as this keyword inside the callback function.
+// Function every should return true if every element in the array pass the test inside the callback function.
+// Function every should return false if any element in the array don't pass the test inside the callback function.
+// Function every should not mutate the array it's called.
+// Function every should return true if array is empty.
+
+function every(array, callback, optionalThis) {
+    let everyCallback = callback;
+
+    if(optionalThis) {
+        everyCallback = callback.bind(optionalThis);
+    }
+
+    for (let i = 0; i < array.length; i++){
+        
+        if (i in array) {
+            array[i] = everyCallback(array[i], i, array, optionalThis);
+            
+            while(array[i] === true){
+                return true;
+            }
+        }
+    }
+
+    if(array = []) {
+        return true;
+    }
+}
+
+tests({
+
+    'Callback should run array.length.': function() {
+        let numberOfTimesCallbackRun = 0;
+        every([1, 2, 3], function(){
+            numberOfTimesCallbackRun++;
+        });
+        eq(numberOfTimesCallbackRun, 3);
+    },
+    'Callback should skip empty indexes.': function() {
+        let originalArray = [1, ,];
+        every(originalArray, function(number) {
+            return number + 1;
+            eq(originalArray[0], 2);
+        });
+    },
+    'Callback should take the current element being processed from the array as the first argument.': function() {
+        every([1], function(currentElement) {
+            eq(currentElement, 1);
+        });
+    },
+    'Callback should take the index of the currentElement being processed from the array as the second argument.': function() {
+        every([1], function(currentElement, currentElementIndex) {
+            eq(currentElementIndex, 0);
+        });
+    },
+    'Callback should take the originalArray as the third argument.': function() {
+        let originalArray = [1];
+        every(originalArray, function (currentElement, currentElementIndex, array){
+            eq(array, originalArray);
+        });
+    },
+    'Function every can take an optionalThis object as the third argument, to be used as this keyword inside the callback function.': function() {
+        let originalArray = [1];
+        every(originalArray, function (currentElement, currentElementIndex, array){
+            eq(this.object, 'I am visible inside the callback');
+        }, {object: 'I am visible inside the callback'});
+    },
+    'Function every should return true if every element in the array pass the test inside the callback function.': function() {
+        every([10, 20, 30], function isGreater(number){
+            if (number > 5) {
+                return true
+            }
+        })
+    },
+    'Function every should return false if any element in the array don\'t pass the test inside the callback function.': function() {
+        every([1, 2, 30], function isGreater(number){
+            if (number > 5) {
+                return true
+            } else {
+                return false;
+            }
+        })
+    },
+    'Function every should not mutate the array it\'s called.': function() {
+        let array = [1, 2, 3];
+        every(array, function(array){   
+        });
+        eq(array, array);
+    },
+    'Function every should return true if array is empty.': function() {
+        every([], function(number){
+            if (!number){
+                return true;
+            }
+        })
+    }
+});
+
+</script>
