@@ -1,0 +1,79 @@
+<script src="../simpletest.js"></script>
+
+<script>
+
+    // Function signature:
+    // arr.indexOf(searchElement[, fromIndex])
+
+
+    // Parameters:
+    // array
+    // searchElement
+    // fromIndex [optional]
+
+    // Tests:
+
+    // It should take an array.
+    // It should take an elementToBeSearched as the second argument.
+    // It should take an optionalFromIndex, as the third argument.
+
+    // Array will not be searched
+        // If optionalFromIndex >= array.length, return -1 (meaning the array will not be searched).
+
+    // Array will be searched partially.
+        // If optionalFromIndex > 0, start search from optionalFromIndex.
+        // If optionalFromIndex < 0, search array front to back.
+
+    // Array will be searched in its totality.
+        // If no optionalFromIndex, default === 0.
+        // If optionalFromIndex === 0, search the whole array.
+
+    // It should return the index of the first element in the array, that matches elementToBeSearched.
+    // It should test the match using strict equality.
+
+    function indexOf(originalArray, elementToBeSearched, optionalFromIndex) {
+        let arrayLength = originalArray.length;
+        let elementIndexFound;
+
+        // If optionalFromIndex === true
+        if(arguments.length === 3) {
+
+            if(optionalFromIndex >= arrayLength) {
+                return -1;
+            }
+        }
+    }
+
+    tests({
+        'It should take an array.': function () {
+            let originalArray = [1, 2, 3];
+            indexOf(originalArray);
+            eq(Array.isArray(originalArray), true);
+        },
+        'It should take an elementToBeSearched as the second argument.': function () {
+            let originalArray = [1, 2, 3];
+            let elementToBeSearched = 3;
+            indexOf(originalArray, elementToBeSearched);
+            eq(elementToBeSearched === 3, true);
+        },
+        'It should take an optionalFromIndex, as the third argument.': function () {
+            let originalArray = [1, 2, 3];
+            let elementToBeSearched = 3;
+            let optionalFromIndex = originalArray[1];
+            indexOf(originalArray, elementToBeSearched, optionalFromIndex);
+            eq(optionalFromIndex === 2, true);
+        },
+        'If optionalFromIndex >= array.length, return -1 (meaning the array will not be searched).': function () {
+            let originalArray = [1, 2, 3];
+            let elementToBeSearched = 2;
+            let optionalFromIndex = 5;
+            let elementIndexFound;
+            elementIndexFound = indexOf(originalArray, elementToBeSearched, optionalFromIndex);
+            eq(elementIndexFound, -1);
+        },
+        'If optionalFromIndex > 0, start search from optionalFromIndex.': function () {
+            
+        }
+    })
+
+</script>
