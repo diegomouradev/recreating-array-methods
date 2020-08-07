@@ -1,0 +1,142 @@
+<script src="../simpletest.js"></script>
+
+<script>
+
+// Function Signature
+
+// const new_array = old_array.concat([value1[, value2[, ...[, valueN]]]])
+
+
+// Test statements
+
+// It should return a new array.
+// It should not mutate the original array. 
+
+// If argumentN is an array, push the array elements to the concatenatedArray in order.
+// If argumentN is a value, push the value to the ConcatenatedArray in order.
+// It should not recurse into nested array arguments.
+
+// It should copy objects references into the new array.  
+    // That is, if a referenced object is modified, the changes are visible to both the new and original arrays.
+
+
+// Example 1
+// const letters = ['a', 'b', 'c'];
+// const numbers = [1, 2, 3];
+
+// letters.concat(numbers);
+// // result in ['a', 'b', 'c', 1, 2, 3]
+
+// Example 2
+// const num1 = [1, 2, 3];
+// const num2 = [4, 5, 6];
+// const num3 = [7, 8, 9];
+
+// const numbers = num1.concat(num2, num3);
+
+// console.log(numbers); 
+// // results in [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+// Example 3
+// const letters = ['a', 'b', 'c'];
+
+// const alphaNumeric = letters.concat(1, [2, 3]);
+
+// console.log(alphaNumeric); 
+// // results in ['a', 'b', 'c', 1, 2, 3]
+
+
+// Example 4
+// const num1 = [[1]];
+// const num2 = [2, [3]];
+
+// const numbers = num1.concat(num2);
+
+// console.log(numbers);
+// // results in [[1], 2, [3]]
+
+// // modify the first element of num1
+// num1[0].push(4);
+
+// console.log(numbers);
+// // results in [[1, 4], 2, [3]]
+
+// Function Concat
+
+function concat(originalArray, argumentN) {
+    let concatenatedArray = [];
+
+    for( let u = 0; u < arguments.length; u++) {
+
+        let isArgumentArray = arguments[u];
+
+        if(Array.isArray(isArgumentArray)) {
+
+            for( let i = 0; i < isArgumentArray.length; i++){
+                concatenatedArray.push(isArgumentArray[i]);
+            }
+        }
+
+        if(!Array.isArray(isArgumentArray) && typeof(argumentN) !== Object) {
+            concatenatedArray.push(argumentN);
+        } else {
+            if(!Array.isArray(isArgumentArray) && typeof(argumentN) === Object) {
+            concatenatedArray.push(argumentN.valueOf(argumentN));
+            }
+        }
+    }
+    return concatenatedArray;
+}
+
+tests({
+    'It should return a new array.': function () {
+       let isArrayReturned = Array.isArray(concat([]));
+       eq(isArrayReturned, true);
+    },
+    'It should not mutate the array its called on.': function () {
+       let originalArray = [1];
+       let arrayToConcat = [2];
+       let concatenatedArray = [];
+       concatenatedArray = concat(originalArray, arrayToConcat);
+       eq(originalArray, 1);
+    },
+    'If argumentN is an array, push the array elements to the concatenatedArray in order.': function () {
+        let originalArray = [1];
+        let arrayToConcat = [2];
+        let concatenatedArray = [];
+        let isArray = Array.isArray(arrayToConcat);
+        concatenatedArray = concat(originalArray, arrayToConcat);
+        eq(isArray, true);
+        eq(concatenatedArray[0] === 1, true);
+        eq(concatenatedArray[1] === 2, true);
+    },
+    'If argumentN is a value, push the value to the ConcatenatedArray in order.': function() {
+        let originalArray = [1, 2];
+        let testValue = 'thisIsAString';
+        let concatenatedArray = [];
+        concatenatedArray = concat(originalArray, testValue);
+        eq(concatenatedArray[0] === 1, true);
+        eq(concatenatedArray[1] === 2, true);
+        eq(concatenatedArray[2], 'thisIsAString');
+    },
+    'It should copy objects references into the new array.': function () {
+        let originalArray = [1];
+        let valueIsObject = {name: 'Object1'};
+        let concatenatedArray = [];
+        concatenatedArray = concat(originalArray, valueIsObject);
+        eq(concatenatedArray[0] === 1, true);
+        eq(concatenatedArray[1] === valueIsObject, true);
+    },
+    'It should not recurse into nested array arguments.': function () {
+        let originalArray = [[1]];
+        let testArray = [2, [3]];
+        let concatenatedArray = [];
+        concatenatedArray = concat(originalArray,testArray);
+        eq(concatenatedArray[0] === originalArray[0], true);
+        eq(concatenatedArray[1] === testArray[0], true);
+        eq(concatenatedArray[2] === testArray[1], true);
+    }
+});
+
+
+</script>
