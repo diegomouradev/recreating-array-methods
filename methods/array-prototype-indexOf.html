@@ -33,7 +33,7 @@
 
     function indexOf(originalArray, elementToBeSearched, optionalFromIndex) {
         let arrayLength = originalArray.length;
-        let elementIndexFound;
+        let initialIndex = 0;
 
         // If optionalFromIndex === true
         if(arguments.length === 3) {
@@ -41,7 +41,17 @@
             if(optionalFromIndex >= arrayLength) {
                 return -1;
             }
+
+            if(optionalFromIndex >= 0) {
+                    for( let i = initialIndex; i < arrayLength; i++) {
+                        if(originalArray[i] === elementToBeSearched) {
+                            return i;
+                    }
+                }
+            }
+            
         }
+
     }
 
     tests({
@@ -72,7 +82,11 @@
             eq(elementIndexFound, -1);
         },
         'If optionalFromIndex > 0, start search from optionalFromIndex.': function () {
-            
+            let originalArray = [1, 2, 3];
+            let elementToBeSearched = 3;
+            let optionalFromIndex = 1;
+            let elementIndexFound = indexOf(originalArray, elementToBeSearched, optionalFromIndex);
+            eq(elementIndexFound, 2);
         }
     })
 
