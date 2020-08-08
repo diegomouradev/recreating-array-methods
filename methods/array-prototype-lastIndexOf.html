@@ -3,7 +3,7 @@
 <script>
 
     // Function signature:
-    // arr.indexOf(searchElement[, fromIndex])
+    // arr.LastIndexOf(searchElement[, fromIndex])
 
 
     // Parameters:
@@ -33,17 +33,22 @@
 
     function indexOf(originalArray, elementToBeSearched, optionalFromIndex) {
         let arrayLength = originalArray.length;
-        let initialIndex = 0;
+        let initialIndex = arrayLength - 1;
 
         // If optionalFromIndex === true
         if(optionalFromIndex) {
 
             if(optionalFromIndex >= arrayLength) {
-                return -1;
+                return initialIndex;
             }
 
-            if(optionalFromIndex >= 0) {
-               initialIndex = optionalFromIndex;
+            if(optionalFromIndex < 0) {
+               let calculatedIndex =  initialIndex + optionalFromIndex;
+               if(calculatedIndex < 0) {
+                   return - 1;
+               } else {
+                   return initialIndex;
+               }
             }
 
             if(optionalFromIndex < 0) {
