@@ -17,21 +17,16 @@
     // It should take an elementToBeSearched as the second argument.
     // It should take an optionalFromIndex, as the third argument.
 
-    // Array will not be searched
-        // If optionalFromIndex >= array.length, return -1 (meaning the array will not be searched).
-
-    // Array will be searched partially.
-        // If optionalFromIndex > 0, start search from optionalFromIndex.
-        // If optionalFromIndex < 0, search array front to back.
-
-    // Array will be searched in its totality.
-        // If no optionalFromIndex, default === 0.
-        // If optionalFromIndex === 0, search the whole array.
+    // If optionalFromIndex < 0, initialValue = array.length - optionalFromIndex.
+    // If initialValue < 0, return -1 (meaning the array will not be searched).
+        
+    // If no optionalFromIndex, default === array.length - 1.
+    // If optionalFromIndex >= 0, initialValue = optionalFromIndex.
 
     // It should return the index of the first element in the array, that matches elementToBeSearched.
     // It should test the match using strict equality.
 
-    function indexOf(originalArray, elementToBeSearched, optionalFromIndex) {
+    function lastIndexOf(originalArray, elementToBeSearched, optionalFromIndex) {
         let arrayLength = originalArray.length;
         let initialIndex = arrayLength - 1;
 
@@ -39,25 +34,24 @@
         if(optionalFromIndex) {
 
             if(optionalFromIndex >= arrayLength) {
-                return initialIndex;
+                initialIndex = initialIndex;
+            }
+
+            if(optionalFromIndex >= 0) {
+                initialIndex = optionalFromIndex;
             }
 
             if(optionalFromIndex < 0) {
-               let calculatedIndex =  initialIndex + optionalFromIndex;
-               if(calculatedIndex < 0) {
+                initialIndex =  initialIndex + optionalFromIndex;
+
+               if(initialIndex < 0) {
                    return - 1;
-               } else {
-                   return initialIndex;
                }
-            }
-
-            if(optionalFromIndex < 0) {
-               initialIndex = arrayLength + optionalFromIndex;
             }
             
         }
 
-        for( let i = initialIndex; i < arrayLength; i++) {
+        for( let i = initialIndex; i <= initialIndex; i--) {
                 if(originalArray[i] === elementToBeSearched) {
                     return i;
             }
@@ -67,51 +61,49 @@
     tests({
         'It should take an array.': function () {
             let originalArray = [1, 2, 3];
-            indexOf(originalArray);
+            lastIndexOf(originalArray);
             eq(Array.isArray(originalArray), true);
         },
         'It should take an elementToBeSearched as the second argument.': function () {
             let originalArray = [1, 2, 3];
             let elementToBeSearched = 3;
-            indexOf(originalArray, elementToBeSearched);
+            lastIndexOf(originalArray, elementToBeSearched);
             eq(elementToBeSearched === 3, true);
         },
         'It should take an optionalFromIndex, as the third argument.': function () {
             let originalArray = [1, 2, 3];
             let elementToBeSearched = 3;
             let optionalFromIndex = originalArray[1];
-            indexOf(originalArray, elementToBeSearched, optionalFromIndex);
+            lastIndexOf(originalArray, elementToBeSearched, optionalFromIndex);
             eq(optionalFromIndex === 2, true);
         },
-        'If optionalFromIndex >= array.length, return -1 (meaning the array will not be searched).': function () {
+        'If optionalFromIndex < 0, initialValue = array.length - optionalFromIndex.': function () {
             let originalArray = [1, 2, 3];
-            let elementToBeSearched = 2;
-            let optionalFromIndex = 5;
-            let elementIndexFound;
-            elementIndexFound = indexOf(originalArray, elementToBeSearched, optionalFromIndex);
-            eq(elementIndexFound, -1);
-        },
-        'If optionalFromIndex > 0, start search from optionalFromIndex.': function () {
-            let originalArray = [1, 2, 3];
-            let elementToBeSearched = 3;
-            let optionalFromIndex = 1;
-            let elementIndexFound = indexOf(originalArray, elementToBeSearched, optionalFromIndex);
-            eq(elementIndexFound, 2);
-        },
-        'If optionalFromIndex < 0, search array front to back.': function () {
-            let originalArray = [1, 2, 3];
-            let elementToBeSearched = 2;
+            let elementToBeSearched = 1;
             let optionalFromIndex = - 2;
-            let elementIndexFound = indexOf(originalArray, elementToBeSearched, optionalFromIndex);
-            eq(elementIndexFound, 1);
+            let elementIndexFound = lastIndexOf(originalArray, elementToBeSearched, optionalFromIndex);
+            eq(elementIndexFound, 0);
         },
         'It should return the index of the first element in the array, that matches elementToBeSearched.': function () {
             let originalArray = [1, 1, 2, 2, 3];
             let elementToBeSearched = 2;
             let optionalFromIndex = 0;
-            let elementIndexFound = indexOf(originalArray, elementToBeSearched, optionalFromIndex);
+            let elementIndexFound = lastIndexOf(originalArray, elementToBeSearched, optionalFromIndex);
+            eq(elementIndexFound, 3);
+        },
+        'If no optionalFromIndex, default === array.length - 1.': function () {
+            let originalArray = [1, 2, 3];
+            let elementToBeSearched = 1;
+            let elementIndexFound = lastIndexOf(originalArray, elementToBeSearched);
+            eq(elementIndexFound, 0);
+        },
+        'If optionalFromIndex >= 0, initialValue = optionalFromIndex.': function () {
+            let originalArray = [1, 1, 2, 2, 3];
+            let elementToBeSearched = 2;
+            let optionalFromIndex = 2;
+            let elementIndexFound = lastIndexOf(originalArray, elementToBeSearched, optionalFromIndex);
             eq(elementIndexFound, 2);
         }
-    })
+    });
 
 </script>
