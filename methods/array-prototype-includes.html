@@ -1,0 +1,119 @@
+<script src="../simpletest.js"></script>
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <ul>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+        </ul>
+    </div>
+</body>
+</html>
+
+
+<script>
+
+    // function signature: arr.includes(valueToFind[, fromIndex])
+
+
+    // It should take arrays.
+    // It should take an elementToBeSearched as the second argument.
+    // It should take an optionalFromIndex, as the third argument.
+    // If optionalFromIndex > 0 ==> initialIndex = optionalFromIndex.
+    // If optionalFromIndex < 0 ==> initialIndex = originalArray.length + optionalFromIndex.
+    // If optionalFromIndex > originalArray.length ==> return false.
+    // It should also take object-like arrays (eg. arguments).
+    
+
+    function includes(originalArrayOrArrayLike, elementToBeSearched, optionalFromIndex) {
+
+        let originalArray = Array.prototype.slice.call(originalArrayOrArrayLike);
+        let arrayLength = originalArray.length;
+        let initialIndex = 0;
+
+        if(optionalFromIndex && Array.isArray(originalArrayOrArrayLike)){
+
+            if(optionalFromIndex >= arrayLength) {
+                return false;
+            }
+
+            if(optionalFromIndex > 0) {
+                initialIndex = optionalFromIndex;
+            }
+
+            if(optionalFromIndex < 0) {
+                initialIndex = arrayLength + optionalFromIndex;
+            }
+        }
+
+        for( let i = initialIndex; initialIndex < arrayLength; i++) {
+            if( originalArray[i] === elementToBeSearched) {
+                return true;
+            }
+        }
+
+    }
+
+    tests({
+
+        'It should take an array.': function () {
+            let originalArray = [1, 2, 3];
+            includes(originalArray);
+            eq(Array.isArray(originalArray), true);
+        },
+        'It should take an elementToBeSearched as the second argument.': function () {
+            let originalArray = [1, 2, 3];
+            let elementToBeSearched = 3;
+            includes(originalArray, elementToBeSearched);
+            eq(elementToBeSearched === 3, true);
+        },
+        'It should take an optionalFromIndex, as the third argument.': function () {
+            let originalArray = [1, 2, 3];
+            let elementToBeSearched = 3;
+            let optionalFromIndex = originalArray[1];
+            includes(originalArray, elementToBeSearched, optionalFromIndex);
+            eq(optionalFromIndex === 2, true);
+        },
+        'If optionalFromIndex > 0 ==> initialIndex = optionalFromIndex.': function () {
+            let originalArray = [1, 2, 3, 4, 5];
+            let elementToBeSearched = 5;
+            let optionalFromIndex = 1;
+            let isElementIncluded = includes(originalArray, elementToBeSearched, optionalFromIndex);
+            eq(isElementIncluded, true);
+        },
+        'If optionalFromIndex < 0 ==> initialIndex = originalArray.length + optionalFromIndex.': function () {
+            let originalArray = [1, 2, 3, 4, 5];
+            let elementToBeSearched = 5;
+            let optionalFromIndex = -2;
+            let isElementIncluded = includes(originalArray, elementToBeSearched, optionalFromIndex);
+            eq(isElementIncluded, true);  
+        },
+        'If optionalFromIndex >= arrayLength ==> return false': function () {
+            let originalArray = [1, 2, 3, 4, 5];
+            let elementToBeSearched = 5;
+            let optionalFromIndex = 6 ;
+            let isElementIncluded = includes(originalArray, elementToBeSearched, optionalFromIndex);
+            eq(isElementIncluded, false);  
+        },
+        'It should also take object-like arrays (eg. node-list).': function () {
+            let getArrayLikeElement = document.querySelectorAll('div');
+            let nodeListDiv = Array.prototype.slice.call(getArrayLikeElement);
+            let elementToBeSearched = nodeListDiv.outerText;
+            let isElementIncluded = includes(nodeListDiv, elementToBeSearched);
+            eq(isElementIncluded, 1);
+        }
+
+
+    });
+
+</script>
