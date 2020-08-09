@@ -1,0 +1,80 @@
+<script src="../simpletest.js"></script>
+
+<script>
+
+    /* 
+
+        Function Signature
+    
+            arr.slice([start[, end]])
+
+        Requirements:
+
+            It should take an optionalStartIndex
+            It should take an optionalEndIndex
+
+            If optionalStartIndex > 0 ==> initialIndex = optionalStartIndex.
+            If optionalStartIndex < 0 ==> initialIndex = array.length + optionalStartIndex.
+            If optionalStartIndex > array.length ==> return arraySliced = [];
+            If no optionalStartIndex ==> initialIndex = 0.
+
+            If optionalEndIndex > 0 ==> finalIndex = optionalEndIndex - 1.
+            If optionalEndIndex < 0 ==> finalIndex = array.length + optionalEndValue;
+            If optionalEndIndex > array.length ==> finalIndex = array.length.
+            If no optionalEndIndex ==> finalIndex = array.length.
+            
+        
+            const animals = ['ant', 'bison', 'camel', 'duck', 'elephant'];
+
+            console.log(animals.slice(2));
+            // expected output: Array ["camel", "duck", "elephant"]
+
+            console.log(animals.slice(2, 4));
+            // expected output: Array ["camel", "duck"]
+
+            console.log(animals.slice(1, 5));
+            // expected output: Array ["bison", "camel", "duck", "elephant"] 
+    
+    */
+
+
+    function slice() {
+        
+    }
+
+
+    tests({
+        
+        'It should take an optionalStartIndex': function () {
+            fail();
+        },
+        'It should take an optionalEndIndex': function () {
+            fail();
+        },
+        'If optionalStartIndex > 0 ==> initialIndex = optionalStartIndex.': function () {
+            fail();
+        },
+        'If optionalStartIndex < 0 ==> initialIndex = array.length + optionalStartIndex.': function () {
+            fail();
+        },
+        'If optionalStartIndex > array.length ==> return arraySliced = [];': function () {
+            fail();
+        },
+        'If no optionalStartIndex ==> initialIndex = 0.': function () {
+            fail();
+        },
+        'If optionalEndIndex > 0 ==> finalIndex = optionalEndIndex - 1.': function () {
+            fail();
+        },
+        'If optionalEndIndex < 0 ==> finalIndex = array.length + optionalEndValue;': function () {
+            fail();
+        },
+        'If optionalEndIndex > array.length ==> finalIndex = array.length.': function () {
+            fail();
+        },
+        'If no optionalEndIndex ==> finalIndex = array.length.': function () {
+            fail();
+        }
+
+    });
+</script>
