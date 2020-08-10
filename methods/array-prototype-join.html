@@ -1,0 +1,132 @@
+<script src="../simpletest.js"></script>
+
+<script>
+
+    /* 
+
+    EXAMPLES:
+
+    const elements = ['Fire', 'Air', 'Water'];
+
+    console.log(elements.join());
+    // expected output: "Fire,Air,Water"
+
+    console.log(elements.join(''));
+    // expected output: "FireAirWater"
+
+    console.log(elements.join('-'));
+    // expected output: "Fire-Air-Water"
+
+    FUNCTION SIGNATURE:
+    arr.join([separator])
+
+    SPECS:
+
+    It should take an separatorX as an argument to join();
+
+    If separatorX, convert to a string if necessary.
+    If separatorX && separatorX = ('') , all elements are joined without any characters in between them.
+
+    If no separatorX ==> separator = a comma (",").
+
+    If  arrayElement is undefined (has holes), null or an empty array [], it is converted to an empty string.
+
+    It should return a string = originalArray[i] concatenated, separated by separatorX.
+    If array.length = 0, return an empty string ('').
+    If array.length = 1, return originalArray.
+    */
+
+    function join (originalArray, separatorX) {
+        let joinedString = "";
+
+        if(originalArray.length === 0) {
+            return "";
+        } else if (originalArray.length === 1) {
+            return originalArray;
+        }
+
+        if(separatorX) {
+            let isSeparatorXString = typeof(separatorX);
+            if(isSeparatorXString !== 'string') {
+                separatorX = separatorX.toString();
+            }
+
+            if(separatorX && separatorX === "") {
+                separatorX = separatorX;
+            }
+        }
+
+        if(separatorX === undefined){
+            separatorX = ",";
+        }
+
+        for( let i = 0; i < originalArray.length; i++){
+
+            if(originalArray[i] === undefined || null) {
+                let emptyString = '';
+                originalArray[i] = emptyString;
+                // for( let u = 0; u < originalArray.length; u++){
+                //     originalArray[i].toString();
+                // }
+            }
+
+            if(!joinedString.includes(originalArray[i])){
+                joinedString = joinedString + originalArray[i];
+            }
+
+            if(joinedString.includes(originalArray[i]) && i <= originalArray.length - 2) {
+                joinedString = joinedString + separatorX;
+            }
+    
+        }
+
+        return joinedString;
+        
+
+    }
+
+
+    tests({
+        
+        'It should take an separatorX as an argument to join();': function () {
+            let separatorX = '-';
+            let joinedString = join(['a','b','c'], '-');
+            eq(separatorX, '-');
+        },
+        'If separatorX NOT a string, convert to a string.': function () {
+            let separatorX = 1;
+            join(['a','b','c'], separatorX);
+            eq(separatorX, '1');
+        },
+        'If separatorX && separatorX = ("") , all elements are joined without any characters in between them.': function () {
+            let separatorX = "";
+            let joinedString = join(['d', 'i', 'e', 'g', 'o'], separatorX);
+            eq(joinedString, 'diego');
+        },
+        'If no separatorX ==> separator = a comma (",").': function () {
+            let joinedString = join(['Moura', ' Diego']);
+            eq(joinedString, 'Moura, Diego');
+        },
+        // 'If  arrayElement is undefined (has holes), null or an empty array [], it is converted to an empty string.': function () {
+        //     let isNull = null;
+        //     let testArray = [ , , isNull, []];
+        //     let joinedString = join(testArray, '-');
+        //     eq(joinedString, '---');
+        // },
+        ' It should return a string = originalArray[i] concatenated, separated by separatorX.': function () {
+            let separatorX = "~";
+            let joinedString = join(['d', 'i', 'e', 'g', 'o'], separatorX);
+            eq(joinedString, 'd~i~e~g~o');
+        },
+        'If array.length = 0, return an empty string ("").': function () {
+            let testArray = [];
+            let joinedString = join(testArray, '-');
+            eq(joinedString, '');
+        },
+        'If array.length = 1, return originalArray.': function () {
+            let testArray = ['diego'];
+            let joinedString = join(testArray);
+            eq(joinedString[0] === 'diego', true);
+        }
+    })
+</script>
