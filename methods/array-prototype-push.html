@@ -1,0 +1,48 @@
+<script src="../simpletest.js"></script>
+
+<script>
+
+    /* 
+    
+    FUNCTION SIGNATURE:
+    arr.push([element1[, ...[, elementN]]])
+
+    EXAMPLES:
+
+    SPECS:
+    It should append elements (elementN) to the end of an array.
+    It should return the new length of the array.
+    If the length property can't be converted to a number, it should be set to 0.
+    If length is nonexistent, length should be created.
+
+    */
+
+    function push(originalArray, elementN) {
+        let newArray = originalArray;
+
+
+        for( let i = 1; i < arguments.length; i++){
+            
+            if(!newArray.includes(arguments[i])){
+                newArray[i] = arguments[i];
+            }
+        }
+
+        return newArray.length;
+    }
+
+    tests({
+        'It should append elements to the end of an array.': function() {
+            testArray = [1];
+            push(testArray, 2, 3);
+            eq(testArray[0], 1);
+            eq(testArray[1], 2);
+            eq(testArray[2], 3);
+        },
+        'It should return the new length of the array.': function() {
+            let newArrayLength = push([1], 2, 3);
+            eq(newArrayLength, 3);
+        }
+    })
+
+</script>
