@@ -62,12 +62,9 @@
 
         for( let i = 0; i < originalArray.length; i++){
 
-            if(originalArray[i] === undefined || null) {
+            if(originalArray[i] === undefined || originalArray[i] === null || originalArray[i].length === 0) {
                 let emptyString = '';
                 originalArray[i] = emptyString;
-                // for( let u = 0; u < originalArray.length; u++){
-                //     originalArray[i].toString();
-                // }
             }
 
             if(!joinedString.includes(originalArray[i])){
@@ -81,7 +78,6 @@
         }
 
         return joinedString;
-        
 
     }
 
@@ -107,12 +103,12 @@
             let joinedString = join(['Moura', ' Diego']);
             eq(joinedString, 'Moura, Diego');
         },
-        // 'If  arrayElement is undefined (has holes), null or an empty array [], it is converted to an empty string.': function () {
-        //     let isNull = null;
-        //     let testArray = [ , , isNull, []];
-        //     let joinedString = join(testArray, '-');
-        //     eq(joinedString, '---');
-        // },
+        'If  arrayElement is undefined (has holes), null or an empty array [], it is converted to an empty string.': function () {
+            let isNull = null;
+            let testArray = [ , , isNull, []];
+            let joinedString = join(testArray, '-');
+            eq(joinedString, '---');
+        },
         ' It should return a string = originalArray[i] concatenated, separated by separatorX.': function () {
             let separatorX = "~";
             let joinedString = join(['d', 'i', 'e', 'g', 'o'], separatorX);
