@@ -10,9 +10,34 @@
         Specs:
         It should remove the last element from an array and returns that element. 
         It should changes the length of the originalArray.
+        If array-like do not contain length property return undefined.
         If array is empty, returned element is === undefined.
-     */
-    tests({
+    */
 
+    function pop(originalArray) {
+        let lastIndex = originalArray.length - 1;
+        let lastElement = originalArray[lastIndex];
+
+        originalArray.length--;
+
+        return lastElement
+    }
+
+    tests({
+        'It should remove the last element from an array and returns that element.': function () {
+            let returnedElement = pop([1, 2, 3]);
+            eq(returnedElement, 3);
+        },
+        'It should changes the length of the originalArray.': function () {
+            let testArray = [1, 2, 3];
+            pop(testArray);
+            eq(testArray.length, 2);
+        },
+        ' If array-like do not contain length property return undefined.': function () {
+            fail();
+        },
+        'If array is empty, returned element is === undefined.': function () {
+            fail();
+        }
     })
 </script>
