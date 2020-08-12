@@ -12,20 +12,24 @@
     SPECS:
     It should append elements (elementN) to the end of an array.
     It should return the new length of the array.
+    It should process array-like objects.
     If the length property can't be converted to a number, it should be set to 0.
     If length is nonexistent, length should be created.
 
     */
 
     function push(originalArray, elementN) {
+
+        if(!Array.isArray(originalArray)){
+            originalArray = Array.from(originalArray);
+        }
+
         let newArray = originalArray;
+        let initialIndex = 1;
 
-
-        for( let i = 1; i < arguments.length; i++){
-            
-            if(!newArray.includes(arguments[i])){
-                newArray[i] = arguments[i];
-            }
+        for( let i = initialIndex; i < arguments.length; i++){
+            newArray.length++;
+            newArray[newArray.length - 1] = arguments[i];
         }
 
         return newArray.length;
@@ -42,6 +46,11 @@
         'It should return the new length of the array.': function() {
             let newArrayLength = push([1], 2, 3);
             eq(newArrayLength, 3);
+        },
+        'It should process array-like objects.': function() {
+            let arrayLikeObject = {0: 'array', 1: 'like', 2:'object', length: 3};
+            let newArrayLikeObjectLength = push(arrayLikeObject, 'pushed');
+            eq(newArrayLikeObjectLength, 4);
         }
     })
 
