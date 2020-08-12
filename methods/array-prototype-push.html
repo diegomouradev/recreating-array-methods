@@ -12,16 +12,29 @@
     SPECS:
     It should append elements (elementN) to the end of an array.
     It should return the new length of the array.
-    It should process array-like objects.
+    It should process array-like objects that have a length property.
+    It should process array-like objects and if length is nonexistent, length should be created.
     If the length property can't be converted to a number, it should be set to 0.
-    If length is nonexistent, length should be created.
+    
 
     */
 
     function push(originalArray, elementN) {
 
+        // Check if it's array or array-like
         if(!Array.isArray(originalArray)){
-            originalArray = Array.from(originalArray);
+
+            // If array-like, check the keys for the length property.
+            let isLength = Object.keys(originalArray);
+
+            if(isLength.includes('length')) {
+                originalArray = Array.from(originalArray);
+            } else {
+                let createLength = {length: isLength.length};
+                Object.assign(originalArray, createLength);
+                originalArray = Array.from(originalArray);
+            }  
+        
         }
 
         let newArray = originalArray;
@@ -47,8 +60,13 @@
             let newArrayLength = push([1], 2, 3);
             eq(newArrayLength, 3);
         },
-        'It should process array-like objects.': function() {
+        'It should process array-like objects that have a length property.': function() {
             let arrayLikeObject = {0: 'array', 1: 'like', 2:'object', length: 3};
+            let newArrayLikeObjectLength = push(arrayLikeObject, 'pushed');
+            eq(newArrayLikeObjectLength, 4);
+        },
+        'It should process array-like objects and if length is nonexistent, length should be created.': function() {
+            let arrayLikeObject = {0: 'array', 1: 'like', 2:'object'};
             let newArrayLikeObjectLength = push(arrayLikeObject, 'pushed');
             eq(newArrayLikeObjectLength, 4);
         }
