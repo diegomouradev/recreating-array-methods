@@ -15,6 +15,11 @@
     */
 
     function pop(originalArray) {
+
+        if(!originalArray.length){
+            return undefined;
+        }
+
         let lastIndex = originalArray.length - 1;
         let lastElement = originalArray[lastIndex];
 
@@ -34,10 +39,14 @@
             eq(testArray.length, 2);
         },
         ' If array-like do not contain length property return undefined.': function () {
-            fail();
+            let arrayLikeObject = {0: 'array', 1: 'like', 2:'object'};
+            popArrayLikeObject = pop(arrayLikeObject);
+            eq(popArrayLikeObject, undefined);
         },
         'If array is empty, returned element is === undefined.': function () {
-            fail();
+            let testArray = [];
+            testArray = pop(testArray);
+            eq(testArray, undefined);
         }
     })
 </script>
