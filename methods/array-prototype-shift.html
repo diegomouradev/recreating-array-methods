@@ -1,0 +1,48 @@
+<script src='../simpletest.js'></script>
+
+<script>
+    /* 
+    
+    Specs:
+    It should remove the element at the zeroeth index, and it should shift the values at consecutive indexes down by one.
+    It should return the removed value.
+    If the length property is 0, undefined is returned.
+    
+    */
+
+
+    function shift(originalArray) {
+
+        if(!originalArray.length){
+            return undefined;
+        }
+        
+        let shiftedElement = originalArray[0];
+
+        for( let i = 0; i < originalArray.length; i++){
+            originalArray[i] = originalArray[i + 1];
+        }
+
+        return shiftedElement;
+    }
+
+    tests({
+        'It should remove the element at the zeroeth index, and shift the values at consecutive indexes down by one.': function () {
+            let testArray = [1, 2, 3];
+            shift(testArray);
+            eq(testArray[0], 2);
+            eq(testArray[1], 3);
+        },
+        'It should return the removed value.': function () {
+            let testArray = [1, 2, 3];
+            let returnedElement = shift(testArray);
+            eq(returnedElement, 1);
+        },
+        'If the length property is 0, undefined is returned.': function () {
+            let testArray = []
+            let returnedElement = shift(testArray);
+            eq(returnedElement, undefined);
+        }
+    })
+
+</script>
