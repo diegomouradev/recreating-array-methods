@@ -36,34 +36,97 @@
 
 
 
-    function fill () {
+    function fill(originalArray, valueToFill, initialIndex, finalIndex) {
+
+        if(initialIndex) {
+            initialIndex = initialIndex;
+        }
+
+        if(initialIndex < 0) {
+            initialIndex = originalArray.length + initialIndex;
+        } else if (!initialIndex){
+           initialIndex = 0;
+        }
+
+        if(finalIndex) {
+            finalIndex = finalIndex;
+        } 
+        
+        if(finalIndex < 0) {
+            finalIndex = originalArray.length + finalIndex;
+        } else if(!finalIndex) {
+            finalIndex = originalArray.length;
+        }
+
        
+        
+        for(let i = initialIndex; i < finalIndex; i++) {
+            originalArray[i] = valueToFill;
+        }
+
+       return originalArray;
+
     }
 
     tests({
         'It should take a valueToFill to be changed in all indexes from an initialIndex to a finalIndex. (0 and arry.length respectively)': function() {
-            fail();
+            let valueToFill = 1;
+            let testArray = [1, 2, 3];
+            fill(testArray, valueToFill);
+            eq(testArray[0], 1);
+            eq(testArray[1], 1);
+            eq(testArray[2], 1);
         },
         'If valueToFill is an Object, each slot in the array will have that object.': function () {
-            fail();
+            let valueToFill = {};
+            let testArray = [1, 'Diego', undefined]; // For testing different types of values.
+            testArray = fill(testArray, valueToFill);
+            testArray[0].it = 'worked';
+            eq(JSON.stringify(testArray[0]), JSON.stringify(testArray[1])); //read on StackOverflow about comparing Objects (https://stackoverflow.com/questions/1068834/object-comparison-in-javascript)
         },
         'It should take an initialIndex. (finalIndex === array.length if not provided.)': function () {
-            fail();
+            let valueToFill = '*';
+            let testArray = [1, 2, 3];
+            testArray = fill(testArray, valueToFill, 1);
+            eq(testArray[0], 1);
+            eq(testArray[1], '*');
+            eq(testArray[2], '*');
         },
         'If initialIndex is negative. initialIndex === array.length + initialIndex.': function () {
-            fail();
+            let valueToFill = '*';
+            let testArray = [1, 2, 3];
+            testArray = fill(testArray, valueToFill, -1);
+            eq(testArray[0], 1);
+            eq(testArray[1], 2);
+            eq(testArray[2], '*');
         },
         'It should take a finalIndex. (initialIndex === 0 if not provided.)': function () {
-            fail();
+            let valueToFill = '*';
+            let testArray = [1, 2, 3, 4, 5, 6];
+            testArray = fill(testArray, valueToFill, 1, 3);
+            eq(testArray[0], 1);
+            eq(testArray[1], '*');
+            eq(testArray[2], '*');
+            eq(testArray[3], 4);
+            eq(testArray[4], 5);
+            eq(testArray[5], 6);
         },
         'If finalIndex is negative. finalIndex === array.length + finalIndex.': function () {
-            fail();
+            let valueToFill = '*';
+            let testArray = [1, 2, 3];
+            testArray = fill(testArray, valueToFill, 0, -1);
+            eq(testArray[0], '*');
+            eq(testArray[1], '*');
+            eq(testArray[2], 3);
         },
         'It does not require that its this value be an Array object.': function () {
             fail();
         },
-        'It should return filledOriginalArray. (not a copy)': function () {
-            fail();
+        'It should return OriginalArray. (not a copy)': function () {
+            let valueToFill = '*';
+            let testArray = [1, 2, 3];
+            let returnedValue = fill(testArray, valueToFill, 0, -1);
+            eq(returnedValue, testArray);
         }
     })
 </script>
