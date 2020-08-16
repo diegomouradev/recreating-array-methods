@@ -1,0 +1,114 @@
+<script src='../simpletest.js'></script>
+
+<script>
+
+    /* 
+    Examples:
+
+
+    arr = [4, 5, 6] // resetting the array
+
+    arr.unshift(1)
+    arr.unshift(2)
+    arr.unshift(3)
+
+    console.log(arr)
+    // [3, 2, 1, 4, 5, 6]
+
+
+    Specs:
+
+    The unshift method inserts the given values to the beginning of an array-like object.
+    
+    Example 1:
+    let arr = [2, 3]
+    arr.unshift(1)
+
+    console.log(arr);
+    // [1, 2, 3]
+    
+    If multiple elements are passed as parameters, they're inserted in chunk at the beginning of the object, in the exact same order they were passed as parameters.
+
+    Example 2:
+    let arr = [4, 5, 6]
+    arr.unshift(1, 2, 3)
+
+    console.log(arr);
+    // [1, 2, 3, 4, 5, 6]
+
+    It should return the new length property of the object upon which the method was called.
+
+    Example 3:
+    let arr = [2, 3]
+    let returnedValue = arr.unshift(1)
+
+    console.log(returnedValue);
+    // 3
+
+    It can be called or applied to objects resembling arrays.
+    Objects which do not contain a length property, should return undefined.
+
+    */
+
+    function unshift(originalArray, elementN) {
+        let elementsToBeAdded = Array.from(arguments);
+        elementsToBeAdded.shift();
+
+        if(!originalArray.length){
+            return undefined;
+        }
+        
+        if(originalArray[0] && arguments.length === 2){
+
+            originalArray.length++
+
+
+        } else if( originalArray[0] && arguments.length > 2){
+
+            for( let u = 0; u < arguments.length - 1; u++){
+                originalArray.length++;
+            }
+
+        }
+
+        for( let i = originalArray.length - 1; i > 0; i--){
+            originalArray[i] = originalArray[i - elementsToBeAdded.length];
+        }
+
+        for( let i = 0; i < elementsToBeAdded.length; i++){
+            originalArray[i] = elementsToBeAdded[i];
+        }
+
+        return originalArray.length;
+        
+    }
+
+
+    tests({
+        'It should inserts the given value to the beginning of an array-like object.': function () {
+            testArray = [2, 3];
+            unshift(testArray, 1);
+            eq(testArray[0], 1);
+        },
+        'If multiple elements are passed as parameters, they\'re inserted in chunk at the beginning of the object, in the exact same order they were passed as parameters.': function () {
+            testArray = [4, 5];
+            unshift(testArray, 1, 2, 3);
+            eq(testArray[0], 1);
+            eq(testArray[1], 2);
+            eq(testArray[2], 3);
+        },
+        'It should return the new length property of the object.': function () {
+            testArray = [4, 5];
+            let testArrayLength = unshift(testArray, 1, 2, 3);
+            eq(testArrayLength, 5);
+        },
+        'It can be called or applied to array-like object.': function () {
+            fail();
+        },
+        'If array-like object do not contain a length property, return undefined.': function () {
+            let testObject = {0: 'No', 1:'Length'};
+            let unshiftTestObject = unshift(testObject, 1);
+            eq( unshiftTestObject, undefined);
+        }
+    })
+</script>
