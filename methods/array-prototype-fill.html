@@ -9,14 +9,29 @@
     Specifications:
     
     It should take a valueToFill to be changed in all indexes from an initialIndex to a finalIndex. (0 and arry.length respectively)
-    If valueToFill is an Object, each slot in the array will have that object.
+    If valueToFill is an Object, each slot in the array will have that object. ---example 1---
     It should take an initialIndex. (finalIndex === array.length if not provided.)
-    If initialIndex is negative. initialIndex === array.length + initialIndex.
+    If initialIndex is negative. initialIndex === array.length + initialIndex. ---example 2a---
+    If initialIndex is > array.length, return originalArray. ---example 3---
+    If initialIndex is Nan, return originalArray. ---example 4---
     It should take a finalIndex. (initialIndex === 0 if not provided.)
-    If finalIndex is negative. finalIndex === array.length + finalIndex.
+    If finalIndex is negative. finalIndex === array.length + finalIndex. ---example 2b---
     It does not require that its this value be an Array object.
     It should return filledOriginalArray. (not a copy)
 
+
+        ---example 1---
+        let arr = Array(3).fill({})       // [{}, {}, {}]
+        arr[0].hi = "hi"                  // [{ hi: "hi" }, { hi: "hi" }, { hi: "hi" }] 
+
+        ---example 2a and 2b---
+        [1, 2, 3].fill(4, -3, -2)        // [4, 2, 3]
+
+        ---example 3---
+        [1, 2, 3].fill(4, 3, 5)          // [1, 2, 3]
+
+        ---example 4---
+        [1, 2, 3].fill(4, NaN, NaN)      // [1, 2, 3]
     */
 
 
