@@ -120,7 +120,12 @@
             eq(testArray[2], 3);
         },
         'It does not require that its this value be an Array object.': function () {
-            fail();
+            let valueToFill = '*';
+            let testObject = {0: 'I am', 1: 'an', 2: 'Object', length: 3};
+            testObject = fill(testObject, valueToFill, 0, -1);
+            eq(testObject[0], '*');
+            eq(testObject[1], '*');
+            eq(testObject[2], 'Object'); 
         },
         'It should return OriginalArray. (not a copy)': function () {
             let valueToFill = '*';
