@@ -2,23 +2,164 @@
 
 <script>
 
-    // Function Signature:
+    // Function Signature: arr.copyWithin(target[, start[, end]])
+        
+        //target
+        /* 
+            Zero-based index at which to copy the sequence to. 
+            If negative, target will be counted from the end.
+            If target is at or greater than arr.length, nothing will be copied. 
+            If target is positioned after start, the copied sequence will be trimmed to fit arr.length.
+        */
 
-    /* 
-        Specifications:
+        // initialIndex
+        /* 
+            Zero-based index at which to start copying elements from. 
+            If negative, start will be counted from the end.
+            If start is omitted, copyWithin will copy from index 0.  
+        */
 
+        // finalIndex
+        /* 
+            Zero-based index at which to end copying elements from. 
+            copyWithin copies up to but not including end. 
+            If negative, end will be counted from the end.
+            If end is omitted, copyWithin will copy until the last index (default to arr.length).
+        */
+    
 
-        Examples:
+    // Specifications:
+
+        /* 
+            It should take a targetSlot at which to copy the sequence to.
+            It can take an optional initialIndex at which to start copying elements from.
+            It can take an optional finalIndex at which end copying elements from. 
+
+            If targetSlot < 0 ==> targetSlot === originalArray.length - 1;
+            If targetSlot >= originalArray.length ==> return originalArray.
+
+            If initialIndex < 0 ==> initialIndex === originalArray.length - 1.
+            If initialIndex && If targetSlot > initialIndex ==> ?(the copied sequence will be trimmed to fit arr.length.)?
+            If NO initialIndex ==> initialIndex === 0.
+
+            If finalIndex < 0 ==> finalIndex === originalArray.length - 1.
+            If NO finalIndex ==> finalIndex === originalArray.length.
+        */
+
+    // Examples:
+
+        // Example 1: Copy to index 0 the element at index 3
+        /* 
+                             0    1    2    3    4
+            const array1 = ['a', 'b', 'c', 'd', 'e'];
+            
+                             'a''d''e'
+            array1.copyWithin(0, 3, 4));
+
+                            'd'
+            const array1 = ['a', 'b', 'c', 'd', 'e'];
+            
+            expected output: Array ["d", "b", "c", "d", "e"]
+        */
+
+    function copyWithin(originalArray, targetSlot, initialIndex, finalIndex) {
+        targetSlot = targetSlot;
+        let newArray = [];
+
+        if(targetSlot >= originalArray.length){
+            return originalArray;
+        }
+
+        if(targetSlot < 0){
+            targetSlot = originalArray.length + targetSlot;
+        }
+
+        if(initialIndex){
+            if(initialIndex < 0){
+                initialIndex = originalArray.length + initialIndex;
+            }
+        } else if(!initialIndex){
+            initialIndex = 0;
+        }
+
+        if(finalIndex < 0){
+            finalIndex = originalArray.length - 1;
+        } else if (!finalIndex){
+            finalIndex = originalArray.length;
+        }
+
+        while(initialIndex < finalIndex) {
+            newArray.push(originalArray[initialIndex]);
+            initialIndex++;
+        }
+
+        if(initialIndex && targetSlot >= initialIndex){
+            newArray.length = originalArray.length - targetSlot;
+        }
+
+        for(let u = 0; u < newArray.length; u++){
+            originalArray[targetSlot] = newArray[u];
+            targetSlot++;
+        }
 
         
-    
-    */
+        let copyWithinArray = originalArray;
 
-    function copyWithin() {
-
+        return copyWithinArray;
     }
 
     tests({
-        
+        ' If targetSlot < 0 ==> targetSlot === originalArray.length - 1;': function () {
+            let testArray = ['d', 'i', 'e', 'g', 'o'];
+            let targetSlot = -3;
+            copyWithin(testArray, targetSlot, 3, 4);
+            eq(testArray[2], 'g');
+        },
+        'If targetSlot >= originalArray.length ==> return originalArray.': function () {
+            let testArray = ['d', 'i', 'e', 'g', 'o'];
+            let targetSlot = 6;
+            let returnedArray = copyWithin(testArray, targetSlot, 3, 4);
+            eq(returnedArray, testArray);
+        },
+        'If initialIndex < 0 ==> initialIndex === originalArray.length + initialIndex.': function () {
+            let testArray = ['d', 'i', 'e', 'g', 'o'];
+            let targetSlot = 3;
+            let returnedArray = copyWithin(testArray, targetSlot, -3, 4);
+            eq(returnedArray[3], 'e');
+            eq(returnedArray[4], 'g');
+        },
+        'If initialIndex && If targetSlot > initialIndex ==> ?(the copied sequence will be trimmed to fit arr.length.)?': function () {
+            let testArray = ['d', 'i', 'e', 'g', 'o'];
+            let targetSlot = 4;
+            let returnedArray = copyWithin(testArray, targetSlot, 1, 4);
+            eq(returnedArray[4], 'i');
+        },
+        'If NO initialIndex ==> initialIndex === 0.': function () {
+            let testArray = ['d', 'i', 'e', 'g', 'o'];
+            let targetSlot = 1;
+            let returnedArray = copyWithin(testArray, targetSlot, undefined, 4);
+            eq(returnedArray[1], 'd');
+            eq(returnedArray[2], 'i');
+            eq(returnedArray[3], 'e');
+            eq(returnedArray[4], 'g');
+        },
+        'If finalIndex < 0 ==> finalIndex === originalArray.length - 1.': function () {
+            let testArray = ['d', 'i', 'e', 'g', 'o'];
+            let targetSlot = 1;
+            let returnedArray = copyWithin(testArray, targetSlot, 0, -1);
+            eq(returnedArray[1], 'd');
+            eq(returnedArray[2], 'i');
+            eq(returnedArray[3], 'e');
+            eq(returnedArray[4], 'g');
+        },
+        'If NO finalIndex ==> finalIndex === originalArray.length.': function () {
+            let testArray = ['d', 'i', 'e', 'g', 'o'];
+            let targetSlot = 1;
+            let returnedArray = copyWithin(testArray, targetSlot, undefined, undefined);
+            eq(returnedArray[1], 'd');
+            eq(returnedArray[2], 'i');
+            eq(returnedArray[3], 'e');
+            eq(returnedArray[4], 'g');
+        }
     })
 </script>
