@@ -1,0 +1,114 @@
+<script src='../simpletest.js'></script>
+
+<script>
+
+    // Function Signature: arr.sort([compareFunction])
+    // The sort() method sorts the elements of an array in place and returns the sorted array. 
+
+    // Specifications:
+    /* 
+
+        It should take a firstElement (a) as the first parameter to the callback compareFunction.
+        It should take a secondElement (b) as the second parameter to the callback compareFunction.
+        
+        If compareFunction(a, b) returns less than 0, sort a to an index lower than b (i.e. a comes first).
+        If compareFunction(a, b) returns 0, leave a and b unchanged with respect to each other, but sorted with respect to all different elements. 
+        If compareFunction(a, b) returns greater than 0, sort b to an index lower than a (i.e. b comes first).
+        compareFunction(a, b) must always return the same value when given a specific pair of elements a and b as its two arguments, else return undefined.
+
+        If NO compareFunction, defaults to the array elements being converted to strings.
+        If NO compareFunction, and array elements are strings, compare their sequences of UTF-16 code units values.
+        It should sort the array, in ascending order according to the compared UTF-16 sequence.
+
+        It should sort ALL undefined elements to the end of the array.
+        It should return the originalArray sorted. (no copy)
+    */
+
+    // Examples:
+    /* 
+        // compareFunction
+
+        function compare(a, b) {
+        if (a is less than b by some ordering criterion) {
+            return -1;
+        }
+        if (a is greater than b by the ordering criterion) {
+            return 1;
+        }
+        // a must be equal to b
+        return 0;
+        }
+
+        function compareNumbers(a, b) {
+            return a - b;
+        }
+
+                             0  1  2   3   4
+        let exampleArray1 = [5, 2, 8, 10, 10]
+
+        compareNumber(5, 2) ==> 3
+            // 3 > 0 ==> a is sorted in a index above b.
+
+        compareNumber(2, 8) ==> -6
+            // -6 < 0 ==>a is sorted in a index below b.
+
+        compareNumbers(10, 10) ==> 0
+            // 0 === 0 ==> both a and b hold their current index position.
+
+
+    */ 
+
+
+    function sort(originalArray, compareNumber) {
+
+        for(let i = 0; i < originalArray.length; i++){
+            let a = originalArray[i];
+            let b = originalArray[i + 1];
+            function compareNumber(a, b) {
+                return a - b;
+            }
+        }
+
+        return originalArray;
+    }
+
+    tests({
+        'It should take a firstElement (a) as the first parameter to the callback compareFunction.': function () {
+            testArray = [5];
+            sort(testArray, function compareNumber(a) {
+                eq(a, 5);
+            });
+        },
+        'It should take a secondElement (b) as the second parameter to the callback compareFunction.': function () {
+            testArray = [5, 2];
+            sort(testArray, function compareNumber(a, b) {
+                eq(a, 5);
+                eq(b, 2);
+            });
+        },
+        'If compareFunction(a, b) returns less than 0, sort a to an index lower than b (i.e. a comes first).': function () {
+            fail();
+        },
+        ' If compareFunction(a, b) returns 0, leave a and b unchanged with respect to each other, but sorted with respect to all different elements. ': function () {
+            fail();
+        },
+        'If compareFunction(a, b) returns greater than 0, sort b to an index lower than a (i.e. b comes first).': function () {
+            fail();
+        },
+        'compareFunction(a, b) must always return the same value when given a specific pair of elements a and b as its two arguments, else return undefined.': function () {
+            fail();
+        },
+        'If NO compareFunction, defaults to the array elements being converted to strings.': function () {
+            fail();
+        },
+        'If NO compareFunction, and array elements are strings, compare their sequences of UTF-16 code units values.': function () {
+            fail();
+        },
+        'It should sort ALL undefined elements to the end of the array.': function () {
+            fail();
+        },
+        'It should return the originalArray sorted. (no copy)': function () {
+            fail();
+        }
+    })
+</script>
