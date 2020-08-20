@@ -59,7 +59,7 @@
     */ 
 
 
-    function sort(originalArray, compareNumber) {
+    function sort(originalArray, callback) {
 
         if(arguments.length < 2) {
 
@@ -69,11 +69,27 @@
                 i++;
             }
             
-            for( let j = 0; j < originalArray.length; j++){
-                let chartCodeValueA = originalArray[j].charCodeAt(0);
+            for( let j = 0; j < originalArray.length - 1; j++){
+                let charCodeValueA = originalArray[j].charCodeAt(0);
                 for( let y = j + 1; y < originalArray.length; y++){
-                    let chartCodeValueB = originalArray[y].charCodeAt(0);
-                    if(chartCodeValueA > chartCodeValueB) {
+                    let charCodeValueB = originalArray[y].charCodeAt(0);
+
+                    if(charCodeValueA > charCodeValueB) {
+                        let copyOfElementA = originalArray[j];
+                        originalArray[j] = originalArray[y];
+                        originalArray[y] = copyOfElementA;
+                    };
+                }
+            }
+        }
+        
+        if(arguments.length === 2){
+            
+            for( let j = 0; j < originalArray.length - 1; j++) {
+                for(let y = j + 1; y < originalArray.length; y++) {
+                    let comparison = callback(originalArray[j], originalArray[y]);
+                    
+                    if(comparison > 0){
                         let copyOfElementA = originalArray[j];
                         originalArray[j] = originalArray[y];
                         originalArray[y] = copyOfElementA;
@@ -81,36 +97,23 @@
                 }
             }
         }
-
+            
         return originalArray;    
     
     }
 
     tests({
-        'It should take a firstElement (a) as the first parameter to the callback compareFunction.': function () {
-            testArray = [5];
-            sort(testArray, function compareNumber(a) {
-                eq(a, 5);
-            });
-        },
-        'It should take a secondElement (b) as the second parameter to the callback compareFunction.': function () {
-            testArray = [5, 2];
-            sort(testArray, function compareNumber(a, b) {
-                eq(a, 5);
-                eq(b, 2);
-            });
-        },
-        'If compareFunction(a, b) returns less than 0, sort a to an index lower than b (i.e. a comes first).': function () {
-            fail();
-        },
-        ' If compareFunction(a, b) returns 0, leave a and b unchanged with respect to each other, but sorted with respect to all different elements. ': function () {
-            fail();
-        },
-        'If compareFunction(a, b) returns greater than 0, sort b to an index lower than a (i.e. b comes first).': function () {
-            fail();
-        },
-        'compareFunction(a, b) must always return the same value when given a specific pair of elements a and b as its two arguments, else return undefined.': function () {
-            fail();
+        
+        'If callback returns > 0, sort currentIndex to after comparisonIndex.': function () {
+            let testArray = [ 2, 8, 0, 9, 1];
+            sort(testArray, function(a, b){
+                return a - b;
+            })
+            eq(testArray[0], 0);
+            eq(testArray[1], 1);
+            eq(testArray[2], 2);
+            eq(testArray[3], 8);
+            eq(testArray[4], 9);
         },
         'If NO compareFunction, defaults to the array elements being converted to strings.': function () {
             let testArray = [1, 2, 'diego'];
