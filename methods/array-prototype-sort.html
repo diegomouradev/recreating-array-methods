@@ -61,13 +61,29 @@
 
     function sort(originalArray, compareNumber) {
 
-        for(let i = 0; i < originalArray.length; i++){
-            let a = originalArray[i];
-            let b = originalArray[i + 1];
-            function compareNumber(a, b);
+        if(arguments.length < 2) {
+
+            let i = 0;
+            while(typeof originalArray[i] !== 'string'){
+                originalArray[i] = JSON.stringify(originalArray[i]);
+                i++;
+            }
+            
+            for( let j = 0; j < originalArray.length; j++){
+                let chartCodeValueA = originalArray[j].charCodeAt(0);
+                for( let y = j + 1; y < originalArray.length; y++){
+                    let chartCodeValueB = originalArray[y].charCodeAt(0);
+                    if(chartCodeValueA > chartCodeValueB) {
+                        let copyOfElementA = originalArray[j];
+                        originalArray[j] = originalArray[y];
+                        originalArray[y] = copyOfElementA;
+                    }
+                }
+            }
         }
 
-        return originalArray;
+        return originalArray;    
+    
     }
 
     tests({
@@ -97,10 +113,16 @@
             fail();
         },
         'If NO compareFunction, defaults to the array elements being converted to strings.': function () {
-            fail();
+            let testArray = [1, 2, 'diego'];
+            sort(testArray);
+            eq(typeof testArray[0], 'string');
         },
         'If NO compareFunction, and array elements are strings, compare their sequences of UTF-16 code units values.': function () {
-            fail();
+            let testArray = ['GHI', 'DEF', 'ABC'];
+            sort(testArray);
+            eq(testArray[0], 'ABC');
+            eq(testArray[1], 'DEF');
+            eq(testArray[2], 'GHI');
         },
         'It should sort ALL undefined elements to the end of the array.': function () {
             fail();
