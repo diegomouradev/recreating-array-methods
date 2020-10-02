@@ -8,10 +8,24 @@
 
         //startIndex
             The index at which to start changing the array.
-            If greater than the length of the array, start will be set to the length of the array. 
-                In this case, no element will be deleted but the method will behave as an adding function, adding as many element as item[n*] provided.
-            If negative, it will begin that many elements from the end of the array. (In this case, the origin -1, meaning -n is the index of the nth last element, and is therefore equivalent to the index of array.length - n.) If array.length + start is less than 0, it will begin from index 0.
+            If startIndex > originalArray ==> startIndex = originalArray.length (No elements are deleted, and itemsN are pushed to the end of originalArray.) 
+            If startIndex < 0 ==> startIndex === startIndex - originalArray.length - 1 (it will begin that many elements from the end of the array. (In this case, the origin -1, meaning -n is the index of the nth last element, and is therefore equivalent to the index of array.length - n.) 
+            If array.length + startIndex < 0 ==> startIndex === 0.
 
+        //deleteCount
+            If NO deleteCount is omitted ==> delete all elements after startIndex.
+            If deleteCount >= array.length - startIndex ==> delete all elements after startIndex.
+
+        //itemN
+        If NO itemN ==> splice() will only remove elements.
+        If itemN ==> push all items to oriinalArray from startIndex.
+
+        If numberOfItemsN > numberOfDeletedItems ==> originalArray.length will change. 
+
+        //Returned Value
+
+        Default ==> return arrayOfDeletedItems.
+        If no elements are removed ==> return []; 
      */
     
     function splice() {

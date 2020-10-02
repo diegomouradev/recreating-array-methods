@@ -61,7 +61,19 @@
 
     function sort(originalArray, callback) {
 
+        for( let i = 0; i < originalArray.length; i++){
+            if(originalArray[i] === undefined){
+                let copyOfLastIndex = originalArray[originalArray.length -1];
+                originalArray[originalArray.length - 1] = originalArray[i];
+                originalArray[i] = copyOfLastIndex;
+            } else {
+                continue;
+            }
+        }
+            
+
         if(arguments.length < 2) {
+
 
             let i = 0;
             while(typeof originalArray[i] !== 'string'){
@@ -72,13 +84,19 @@
             for( let j = 0; j < originalArray.length - 1; j++){
                 let charCodeValueA = originalArray[j].charCodeAt(0);
                 for( let y = j + 1; y < originalArray.length; y++){
-                    let charCodeValueB = originalArray[y].charCodeAt(0);
 
-                    if(charCodeValueA > charCodeValueB) {
-                        let copyOfElementA = originalArray[j];
-                        originalArray[j] = originalArray[y];
-                        originalArray[y] = copyOfElementA;
-                    };
+                    if(originalArray[y] === undefined){
+                        originalArray[y] = originalArray[y];
+                    } else {
+                        let charCodeValueB = originalArray[y].charCodeAt(0);
+
+                        if(charCodeValueA > charCodeValueB) {
+                            let copyOfElementA = originalArray[j];
+                            originalArray[j] = originalArray[y];
+                            originalArray[y] = copyOfElementA;
+                        };
+                    }
+                    
                 }
             }
         }
@@ -128,10 +146,17 @@
             eq(testArray[2], 'GHI');
         },
         'It should sort ALL undefined elements to the end of the array.': function () {
-            fail();
+            let testArray = ['GHI', , 'ABC'];
+            sort(testArray);
+            eq(testArray[0], 'ABC');
+            eq(testArray[1], 'GHI');
+            eq(testArray[2], undefined);
         },
-        'It should return the originalArray sorted. (no copy)': function () {
-            fail();
+        'It should return the originalArray sorted.': function () {
+            let testArray = ['GHI', 'DEF', 'ABC'];
+            let returnedArray = sort(testArray);
+            eq(returnedArray, sort(testArray));
         }
-    })
+    });
+
 </script>
